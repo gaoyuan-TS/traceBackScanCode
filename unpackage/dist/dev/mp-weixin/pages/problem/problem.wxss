@@ -1,0 +1,48 @@
+.problem {
+  padding-bottom: 50rpx;
+}
+.problem .body-main {
+  padding: 36rpx 32rpx 0rpx;
+  font-size: 26rpx;
+}
+.problem .body-main .content {
+  padding: 27rpx 0 40rpx 0;
+}
+.problem .body-main .content .desc {
+  color: #808080;
+  line-height: 36rpx;
+}
+.problem .body-main .content .image-wrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+  margin-top: 42rpx;
+}
+.problem .body-main .content .image-wrap .image-item {
+  position: relative;
+  margin-bottom: 14rpx;
+}
+.problem .body-main .content .image-wrap .image-item:not(:nth-child(4n)) {
+  margin-right: 14rpx;
+}
+.problem .body-main .content .image-wrap .image-item .image {
+  display: block;
+  /*可以去除图片底部的3px*/
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 10rpx;
+}
+.problem .body-main .content .image-wrap .image-item .enlarge {
+  position: absolute;
+  right: 12rpx;
+  bottom: 10rpx;
+  width: 28rpx;
+  height: 28rpx;
+}
+.problem .body-main .reply-wrap {
+  padding-top: 40rpx;
+  border-top: 1px solid #D8D8D8;
+}
+

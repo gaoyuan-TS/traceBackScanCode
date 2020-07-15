@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "更多",
+  "usingComponents": {
+    "swiper-nav-bar": "/components/swiperNavBar/swiperNavBar",
+    "goods-complaint": "/components/more/goods-complaint",
+    "agent-application": "/components/more/agent-application"
+  }
+}

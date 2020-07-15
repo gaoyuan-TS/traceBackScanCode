@@ -1,0 +1,13 @@
+.fold-box .body-main.data-v-d105d2ee {
+  padding: 36rpx 32rpx 56rpx;
+}
+.fold-box .body-main .desc.data-v-d105d2ee {
+  text-indent: 40rpx;
+  color: #808080;
+  line-height: 36rpx;
+  margin-bottom: 40rpx;
+  overflow: hidden;
+  -webkit-transition: height 0.3s ease;
+  transition: height 0.3s ease;
+}
+
