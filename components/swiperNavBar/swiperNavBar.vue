@@ -4,7 +4,7 @@
 		<view class="swiperTab" v-for="(item,index) in swiperTabList" :key='index' :id=" 'tab-' + index " @tap="CurrentTab(index,item)">
 			
 			<!--导航标题-->
-			<text :style="{ color:swiperTabIdx == index ? '#536BFF': '#333','font-size': swiperTabIdx == index ? '28upx' : '26upx'}">
+			<text :style="{ color:swiperTabIdx == index ? '#EF4235': '#333','font-size': swiperTabIdx == index ? '28upx' : '26upx'}">
 				{{ item }}
 			</text>
 			<!--导航标题-->
@@ -73,7 +73,7 @@
 		border-radius: 30upx; 
 		width:100%;
 		height:4upx;
-		background-color: #536BFF;
+		background-color: #EF4235;
 	}
 	@keyframes currentLine{ 
 		0%{

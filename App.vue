@@ -60,12 +60,12 @@ page {
 .btn-item {
 	display: flex;
 	align-items: center;
-	border: 1px solid #536BFF;
+	border: 1px solid #EF4235;
 	height: 48upx;
 	border-radius: 24upx;
 	box-sizing: border-box;
 	padding: 0 22upx;
-	color: #536BFF;
+	color: #EF4235;
 	>image {
 		width: 30upx;
 		height: 30upx;

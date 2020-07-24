@@ -209,7 +209,7 @@ export default {
 			text-align: center;
 			line-height: 88upx;
 			border-radius: 44upx;
-			background-color: #536BFF;
+			background-color: #EF4235;
 			color: #fff;
 			font-size: 30upx;
 		}

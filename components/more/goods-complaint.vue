@@ -37,7 +37,7 @@
 		
 		<navigator class="check-wrap" url="../../pages/problem/problem">
 			<view class="check-main">
-				<image src="https://zs-1256645015.cos.ap-guangzhou.myqcloud.com/trace/2020/7/12/84dc4c48-7fec-41f1-a4f2-1c1eceae5c89.png"></image> 
+				<image src="../../static/images/sellers/play.png"></image> 
 				{{$t('more.view_historical_issues')}}
 			</view>
 		</navigator>
@@ -214,7 +214,7 @@ export default {
 			display: flex;
 			margin-left: auto;
 			align-items: center;
-			color: #536BFF;
+			color: #EF4235;
 			font-size: 28upx;
 			>image {
 				width: 32upx;
@@ -234,7 +234,7 @@ export default {
 			text-align: center;
 			line-height: 88upx;
 			border-radius: 44upx;
-			background-color: #536BFF;
+			background-color: #EF4235;
 			color: #fff;
 			font-size: 30upx;
 		}

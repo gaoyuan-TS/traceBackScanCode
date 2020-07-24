@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "fold-box": "/components/fold-box/fold-box"
-  }
-}
