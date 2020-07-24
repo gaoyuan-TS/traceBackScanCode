@@ -4,7 +4,7 @@
 			<view slot="title-right-content">
 				<view class="title-right-content">
 					<image src="../../static/images/sellers/shipin.png"></image>
-					<view style="color:#536BFF;">商家视频</view>
+					<view style="color:#EF4235;">商家视频</view>
 				</view>
 			</view>
 			

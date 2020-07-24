@@ -44,7 +44,7 @@ export default {
 			font-size: 30upx;
 			font-weight: bold;
 			padding-left: 20upx;
-			border-left: 4upx solid #536BFF;
+			border-left: 4upx solid #EF4235;
 			letter-spacing: 1px;
 		}	
 	}

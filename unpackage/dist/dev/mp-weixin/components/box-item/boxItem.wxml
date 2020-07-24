@@ -1,1 +1,0 @@
-<view class="box-item" style="{{'border-top-left-radius:'+(borderRadius)+';'+('border-top-right-radius:'+(borderRadius)+';')}}"><block wx:if="{{title}}"><view class="header-wrap"><view class="title">{{title}}</view><slot name="title-right"></slot></view></block><slot name="body"></slot></view>

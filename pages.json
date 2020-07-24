@@ -36,7 +36,13 @@
 				"navigationBarTitleText": "切换语言"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/materials/materials",
+          "style": {
+          	"navigationBarTitleText": "原材料信息"
+          }
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#fff",
@@ -44,7 +50,7 @@
 	},
 	"tabBar": {
 		"color": "#B3B3B3",
-		"selectedColor": "#536BFF",
+		"selectedColor": "#EF4235",
 		"backgroundColor": "#fff",
 		"list": [{
 				"pagePath": "pages/index/index",
