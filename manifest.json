@@ -72,7 +72,38 @@
     "mp-toutiao" : {
         "usingComponents" : true
     },
-    "uniStatistics": {  
-        "enable": false
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : "7OFBZ-YVLW3-CSF3Q-YXLDZ-CSEDH-PVFEA"
+                }
+            }
+        },
+        "router" : {
+            "mode" : "hash",
+            "base" : ""
+        },
+        "domain" : "http://scode-beta.cntracechain.com",
+        "devServer" : {
+            "port" : 8000, //端口号
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/api" : {
+                    "target" : "https://scode.cntracechain.com", //目标接口域名
+                    "changeOrigin" : true, //是否跨域
+                    "secure" : true // 设置支持https协议的代理
+                }
+            },
+            "https" : false
+        },
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : true
+            }
+        }
     }
 }

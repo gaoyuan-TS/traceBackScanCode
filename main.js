@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import VueI18n from 'vue-i18n'
 
-import common from 'common/common.js'
+import common from './common/common.js'
 import BoxItem from './components/box-item/boxItem.vue'
 import AssideRight from './components/aside-right/aside-right.vue'
 import SelectLang from './components/select-lang/select-lang.vue'

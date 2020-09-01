@@ -36,7 +36,9 @@
 				})
 			} 
 		},
-
+		onLoad(option) {
+			console.log('option',option)
+		},
 		onHide() {
 			console.log('App Hide')
 		}

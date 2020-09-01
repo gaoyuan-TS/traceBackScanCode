@@ -38,7 +38,7 @@ export default {
 		// 设置如果超出这个范围 则要显示更多的内容按钮
 		limitHeight: {
 			type: Number,
-			default: 180
+			default: 200
 		},
 		
 		// 下拉文字
@@ -102,11 +102,9 @@ export default {
 	.body-main {
 		padding: 36upx 32upx 56upx;
 		.desc {
-			text-indent: 40upx;
 			color: #808080;
-			line-height: 36upx;
 			margin-bottom: 40upx;
-			overflow: hidden;
+			overflow: visible;
 			transition: height .3s ease;
 		}
 	}

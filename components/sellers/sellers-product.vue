@@ -1,6 +1,6 @@
 <template>
 	<view class="sellers-product">
-		<box-item title="主营产品">
+		<box-item :title="$t('sellers.main_products')">
 			<view slot="body">
 				<view class="body-main">
 					<view class="product-wrap">
@@ -19,7 +19,7 @@
 					<view style="display: flex;padding-right: 30upx;">
 						<view class="btn-item" style="margin-left: auto;">
 							<image src="../../static/images/sellers/lianjie.png" mode=""></image>
-							前往“一带一路”数据库查看
+							{{$t('sellers.view_database')}}
 						</view>
 					</view>
 				</view>

@@ -36,7 +36,6 @@ export default {
 	},
 	data() {
 		return {
-			// swiperTabList: ['商品投诉','代理商申请'],
 			swiperTabList: [this.$t('more.commodity_complaints'),this.$t('more.agent_application')],
 			scrollIntoView: 0,  // 设置哪个方向可滚动，则在哪个方向滚动到该元素
 			swiperTabIdx: 0,
