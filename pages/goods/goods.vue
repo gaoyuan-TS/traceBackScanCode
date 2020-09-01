@@ -5,26 +5,14 @@
 			<view slot="body">
 				<!-- 轮播图 -->
 				<view class="swiper-main">
-					<video v-if="!is_flag" id="myVideo" class="videoBox" src="https://img.cdn.aliyun.dcloud.net.cn/guide/uniapp/%E7%AC%AC1%E8%AE%B2%EF%BC%88uni-app%E4%BA%A7%E5%93%81%E4%BB%8B%E7%BB%8D%EF%BC%89-%20DCloud%E5%AE%98%E6%96%B9%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B@20181126-lite.m4v"
-					 @error="videoErrorCallback" controls></video>
-
+					<video v-if="!is_flag" id="myVideo" class="videoBox" :src="merchantInfo.goodsVideo" controls></video>
 					<view class="uni-padding-wrap" v-if="is_flag">
 						<view class="page-section ">
 							<view class="page-section-spacing">
 								<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-									<swiper-item>
+									<swiper-item v-for="(Gimg,imge) in merchantInfo.goodsImages" :key="imge">
 										<view class="swiper-pic">
-											<image src="../../static/picture/3.png" mode=""></image>
-										</view>
-									</swiper-item>
-									<swiper-item>
-										<view class="swiper-pic">
-											<image src="../../static/picture/4.png" mode=""></image>
-										</view>
-									</swiper-item>
-									<swiper-item>
-										<view class="swiper-pic">
-											<image src="../../static/picture/5.png" mode=""></image>
+											<image :src="Gimg" mode=""></image>
 										</view>
 									</swiper-item>
 								</swiper>
@@ -33,27 +21,26 @@
 					</view>
 
 					<view class="btnBox">
-						<view class="left" :class="{'active': !active}" @click="changeTypeVideo">视频</view>
-						<view class="right" :class="{'active': active}" @click="changeTypePic">图片</view>
+						<view class="left" v-if="merchantInfo.goodsVideo" :class="{'active': active}" @click="changeTypePic">{{$t('goods.video')}}</view>
+						<view class="right" :class="{'active': !active}" @click="changeTypePic">{{$t('goods.image')}}</view>
 					</view>
 				</view>
 				<!-- 轮播图 -->
 				<view class="product-content">
-					<view class="text-title">十月芬芳口腔护理套装套装四件套组合/盒 洁齿护龈抑菌</view>
+					<view class="text-title">{{merchantInfo.goodsName}}</view>
 				</view>
 
 				<!-- 商品信息 -->
 				<view class="goods-info">
-					<fold-box title="" :limitHeight="220">
+					<fold-box title="">
 						<view slot="desc">
 							<view class="content-main">
-								<view class="Chain">商品条形码：<text class="Chain-title">2019/09/09 13:12</text></view>
-								<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
-								<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
-								<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
-								<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
-								<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
-								<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
+								<view class="Chain" v-for="(item,index) in goodInfo" :key="index">
+									<view class="Chain-name">
+										{{item.name}}:
+									</view>
+									<view class="Chain-title">{{item.value}}</view>
+								</view>
 							</view>
 						</view>
 					</fold-box>
@@ -61,15 +48,15 @@
 
 			</view>
 		</box-item>
-		
+
 		<view style="margin-top: 20upx;">
-			<box-item title="商品详情">
+			<box-item :title="$t('goods.product_information')">
 				<view slot="body">
-				<view class="goods-image">
-					<view class="goods-item">
-						<image src="../../static/picture/5.png" mode="widthFix"></image>
+					<view class="goods-image">
+						<view class="goods-item" v-html="merchantInfo.goodsInfo">
+							<!-- <image src="../../static/picture/5.png" mode="widthFix"></image> -->
+						</view>
 					</view>
-				</view>
 				</view>
 			</box-item>
 		</view>
@@ -89,18 +76,45 @@
 				autoplay: true,
 				interval: 2000,
 				duration: 500,
-				is_flag: false, //显示隐藏图片跟视频
-				active: false
+				is_flag: true, //显示隐藏图片跟视频
+				active: false,
+				goodInfo: [],
+				merchantInfo: {},
+				trade: false,
+				Sid: 791396201, //追溯码
 			}
 		},
+		onLoad(option) {
+			this.Sid = uni.getStorageSync('Sid')
+			this.getgoodInfo()
+			this.getmerchantInfo()
+		},
 		methods: {
-			changeTypeVideo() {
-				this.active = false
-				this.is_flag = false
-			},
 			changeTypePic() {
-				this.active = true
-				this.is_flag = true
+				this.active = !this.active
+				this.is_flag = !this.is_flag
+			},
+			// 商家接口
+			getmerchantInfo() {
+				this.$common.get('/back-end/ewm/getMerchantInfo?code=' + this.Sid).then((data) => {
+					if (data.data.code === 200) {
+						this.merchantInfo = data.data.data || {}
+					} else {
+						this.merchantInfo = {}
+					}
+				})
+			},
+			// 商品接口
+			getgoodInfo() {
+				this.$common.get('/back-end/ewm/getGoodsInfo?code=' + this.Sid).then((data) => {
+					if (data.data.code === 200) {
+						// console.log(data)
+						this.goodInfo = data.data.data
+					} else {
+						this.goodInfo = {}
+					}
+					// console.log(this.goodInfo)
+				})
 			},
 		}
 	}
@@ -234,8 +248,8 @@
 		.goods-info {
 			// margin: 20upx 40upx;
 		}
-			
-			
+
+
 		.Chain {
 			width: 100%;
 			margin-top: 32upx;
@@ -243,26 +257,40 @@
 			font-family: PingFangSC, PingFangSC-Medium;
 			font-weight: 600;
 			display: flex;
-			align-items: center;
+			align-items: flex-start;
 			margin-left: 20upx;
 
 			.Chain-title {
-
+				flex: 1;
+				overflow-wrap: break-word;
 				font-weight: 400;
 			}
 
 			.Chain-name {
-
-				font-weight: 400;
+				width: 200upx;
+				text-align: right;
 			}
 		}
 
 		.goods-image {
 			width: 100%;
+
 			.goods-item {
+				box-sizing: border-box;
+				display: flex;
+				flex-direction: column;
 				width: 100%;
-				image {
-					width: 100%;
+				justify-content: center;
+				align-items: center;
+				padding: 10px 15px;
+
+				/deep/ p {
+					color: #ae1e24;
+					text-align: center;
+
+					img {
+						max-width: 100%;
+					}
 				}
 			}
 		}

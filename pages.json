@@ -1,5 +1,11 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	{
+		"path": "Produce",
+		"style": {
+			"navigationBarTitleText": "追溯信息"
+		}
+	},
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -41,6 +47,12 @@
           "style": {
           	"navigationBarTitleText": "原材料信息"
           }
+        }
+        ,{
+            "path" : "pages/record/record",
+           "style": {
+           	"navigationBarTitleText": "扫码记录"
+           }
         }
     ],
 	"globalStyle": {

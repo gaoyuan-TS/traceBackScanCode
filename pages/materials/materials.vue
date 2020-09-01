@@ -4,24 +4,28 @@
 			<view slot="body" class="box">
 				<view class="header">
 					<view class="left">
-						<image src="../../static/picture/2.png" mode=""></image>
+						<image :src="material.imageUrl" mode=""></image>
 					</view>
 					<view class="right">
 						<view class="goods-name">
-							大白菜
+							{{material.materialName}}
 						</view>
 						<view class="batch">
 							入库批次号：
-							RK2009190987666
+							{{material.batchNumber}}
 						</view>
 					</view>
 				</view>
 				<view class="circulate-info">
-					<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
-					<view class="Chain">环节名称：<text class="Chain-title">广州市天河区天源路401号</text></view>
-					<view class="Chain">环节描述：<view class="Chain-name">
-							<view class="btn-item" style="margin-left: auto;">
-								<image src="../../static/picture/raw.png"></image>
+					<view class="Chain">入库时间：<text class="Chain-title">{{material.createTime}}</text></view>
+					<view class="Chain">使用重量：<text class="Chain-title">{{material.quantity}}</text></view>
+					<view class="Chain">入库单号：<text class="Chain-title">{{material.warehouseOrder}}</text></view>
+					<view class="Chain">库房编号：<text class="Chain-title">{{material.warehouseNumber}}</text></view>
+					<view class="Chain">库房名称：<text class="Chain-title">{{material.warehouseName}}</text></view>
+					<view class="Chain" v-for="(item,index) in material.attributesList" :key="index">{{item.attributeName}}：<text class="Chain-title">{{item.attributeValue}}</text></view>
+					<view class="Chain">抽样报告：<view class="Chain-name">
+							<view class="btn-item" style="margin-left: auto;" @click="lookImg(material.reportUrl)">
+								<image src="../../static/picture/raw.png" ></image>
 								下载检测文件
 							</view>
 						</view>
@@ -30,15 +34,15 @@
 			</view>
 		</box-item>
 
-		<box-item title="区块信息" style="margin-top: 20upx;">
+		<box-item title="原材料来源信息" style="margin-top: 20upx;">
 			<view slot="body" class="box2">
 				<view class="circulate-info">
-					<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
-					<view class="Chain">环节名称：<text class="Chain-title">广州市天河区天源路401号</text></view>
-					<view class="Chain">环节描述：<view class="Chain-name">xxx枸杞</view>
+					<view class="Chain">原材料来源：<text class="Chain-title">{{materialSource.materialSource}}</text></view>
+					<view class="Chain">负责人：<text class="Chain-title">{{materialSource.principal}}</text></view>
+					<view class="Chain">负责人电话：<text class="Chain-title">{{materialSource.mobile}}</text></view>
+					<view class="Chain">地址：<text class="Chain-title">{{materialSource.address}}</text></view>
 					</view>
 				</view>
-			</view>
 		</box-item>
 	</view>
 </template>
@@ -47,10 +51,33 @@
 	export default {
 		data() {
 			return {
-
+				material:{},
+				materialSource:{}
 			};
+		},
+		onLoad(option) {
+			this.getMaterial(option.id)
+		},
+		methods:{
+			getMaterial(id){
+				this.$common.get('/material-admin/material/trace/info?materialOutId=' + id).then((data) => {
+					console.log(data)
+					if(data.data.statusCode){
+						this.material = data.data.data
+						this.materialSource = this.material.materialSource
+					}else {
+						this.material = {}
+					}
+				})
+			},
+			lookImg(e) {
+				uni.previewImage({
+					urls: [e],
+				})
+			}
 		}
 	}
+
 </script>
 
 <style lang="less">

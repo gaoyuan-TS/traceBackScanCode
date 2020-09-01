@@ -4,43 +4,43 @@
 			<view slot="body">
 				<view class="body-main">
 					<view class="top-wrap">
-						<image src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2947876270,1875330205&fm=26&gp=0.jpg"></image>
+						<image :src="merchantInfo.merchantImage.merchantLogoUrl"></image>
 						<view class="right-wrap">
-							<view class="company">广东十月芬芳生物科技有限公司</view>
-							<view class="company-info">
-								<view class="desc">主营业务</view>
+							<view class="company">{{merchantInfo.merchantName}}</view>
+	<!-- 						<view class="company-info">
+								<view class="desc">{{$t('sellers.main_business')}}</view>
 								<view class="tag-wrap">
-									<text class="tag" v-for="(item,index) in tagList" :key="index">
-									{{item}}
+									<text class="tag">
+										{{merchantInfo.businessLines}}
 									</text>
 								</view>
-							</view>
+							</view> -->
 						</view>
 					</view>
 					
 					<view class="down-wrap">
 						<view class="info-item">
-							<view class="title">入库时间：</view>
-							<view class="desc">2019/09/09 13:12</view>
+							<view class="title">{{$t('sellers.storage_time')}}：</view>
+							<view class="desc">{{merchantInfo.enterTime}}</view>
 						</view>
 						<view class="info-item">
-							<view class="title">企业法人：</view>
-							<view class="desc">陈总</view>
+							<view class="title">{{$t('sellers.corporate')}}：</view>
+							<view class="desc">{{merchantInfo.businessEntity}}</view>
 						</view>
 						<view class="info-item">
-							<view class="title">所在地：</view>
-							<view class="desc">中国广东省广州市天河区</view>
+							<view class="title">{{$t('sellers.location')}}：</view>
+							<view class="desc">{{merchantInfo.administrativeAddress}}</view>
 						</view>
 						<view class="info-item">
-							<view class="title">详细地址：</view>
-							<view class="desc">天源路401号2栋340房</view>
+							<view class="title">{{$t('sellers.address')}}：</view>
+							<view class="desc">{{merchantInfo.siteDetail}}</view>
 						</view>
 					</view>
 					
-					<view style="display: flex;padding-right: 14upx;">
+					<view style="display: flex;padding-right: 14upx;" @click="jumpOne()">
 						<view class="btn-item" style="margin-left: auto;">
-							<image src="../../static/images/sellers/lianjie.png"></image>
-							前往“一带一路”数据库查看
+							<image src="../../static/images/sellers/lianjie.png" ></image>
+							{{$t('sellers.view_database')}}
 						</view>
 					</view>
 				</view>
@@ -51,11 +51,26 @@
 
 <script>
 export default {
+	props: {
+		// 标题
+		merchantInfo: {
+			type: Object,
+			default: ''
+		}},
 	data() {
 		return {
 			tagList: ['化妆品','生活用品'],
-			tagColorIndex: 0
+			tagColorIndex: 0,
+			merchantInfo:{}
 		}
+	},
+	
+	methods:{
+		// 跳转到一带一路数据库
+		jumpOne () {
+		  // window.location.href = 'http://pdb-beta.cntracechain.com/h5/#/pages/detail/detail?goodsid=' + this.goodid
+		  window.location.href = 'https://zhuisu.china.com.cn/h5/#/pages/detail/detail?goodsid=' + this.merchantInfo.goodsId
+		},
 	}
 }
 </script>
@@ -111,7 +126,7 @@ export default {
 			display: flex;
 			margin-bottom: 30upx;
 			.title {
-				width: 23%;
+				
 				font-weight: bold;
 			}
 		}

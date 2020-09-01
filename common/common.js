@@ -1,4 +1,5 @@
-let API_Url = ''
+let API_Url = 'http://scode-beta.cntracechain.com'
+// let API_Url = 'https://scode.cntracechain.com'
 
 export default class Common {
 
@@ -7,28 +8,24 @@ export default class Common {
 		if (loading) {
 			Common.loading()
 		}
-		// #ifdef APP-PLUS || MP-WEIXIN
 		url = API_Url + url
-		// #endif
-
 		return new Promise((resolve, reject) => {
 			uni.request({
-				url: url,
-				method: 'GET',
-				data: param,
+				url: url, //仅为示例，并非真实接口地址。
+				method: "GET",
+				data:param,
 				success: (res) => {
 					resolve(res)
 				},
 				fail: (error) => {
-					reject(res)
+					reject(error)
 				},
 				complete: () => {
 					if (loading) {
 						Common.hideLoading()
 					}
-			
 				}
-			})
+			});
 		})
 	}
 
@@ -37,9 +34,7 @@ export default class Common {
 		if (loading) {
 			Common.loading()
 		}
-		// #ifdef APP-PLUS || MP-WEIXIN
 		url = API_Url + url
-		// #endif
 		return new Promise((resolve, reject) => {
 			uni.request({
 				url: url,
@@ -104,27 +99,6 @@ export default class Common {
 		}
 	}
 	
-	// 函数节流
-	static throttle(fn, time) {
-		let last
-		let timer
-		const interval = time || 200
-		return function() {
-			const th = this
-			const args = arguments
-			const now = +new Date()
-			if (last && now - last < interval) {
-				clearTimeout(timer)
-				timer = setTimeout(function() {
-					last = now
-					fn.apply(th, args)
-				}, interval)
-			} else {
-				last = now
-				fn.apply(th, args)
-			}
-		}
-	}
 	
 	// 图片预览
 	static preViewImg(current,urls) {
@@ -183,5 +157,25 @@ export default class Common {
 			})
 		})
 	}
-	
+	  static formatTime (timeData, type) {
+	    // console.log(timeData)
+	    // type 1 是时分秒  0 无时分秒
+	    let date = new Date(timeData)
+	    let year = date.getFullYear()
+	    let mouth = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
+	    let day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+	    let hour = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
+	    let min = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
+	    let sec = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
+	    let hourMinSe = ''
+	    if (type) {
+	      hour = date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
+	      min = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
+	      sec = date.getSeconds() > 9 ? date.getSeconds() : '0' + date.getSeconds()
+	      hourMinSe = ` ${hour}:${min}:${sec}`
+	    }
+	    // console.log(hour)
+	    let time = `${year}-${mouth}-${day}${hourMinSe}`
+	    return time
+	  }
 }

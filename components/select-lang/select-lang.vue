@@ -2,7 +2,7 @@
 	<view class="select-lang">
 		<view class="select-btn" @tap="isSelect=true">
 			<image src="https://zs-1256645015.cos.ap-guangzhou.myqcloud.com/trace/2020/7/14/51d1b559-fd5d-4a05-be6a-16b3e9712ea5.jpg"></image>
-			<text>切换语言</text>
+			<text>language</text>
 		</view>
 		<!-- <view class="select-btn" @tap="isSelect=true">
 			<image src="https://zs-1256645015.cos.ap-guangzhou.myqcloud.com/trace/2020/7/14/51d1b559-fd5d-4a05-be6a-16b3e9712ea5.jpg" mode="widthFix"></image>
@@ -16,7 +16,7 @@
 		<!-- 选择弹窗 -->
 		 <view class="select-popup" v-if="isSelect" :class="{showFade: isSelect}" @touchmove.stop.prevent>
 		 	<view class="pop-main">
-		 		<view class="title">当前语言</view>
+		 		<view class="title">{{$t('all.current_language')}}</view>
 		 		<view class="lang">
 		 			<view class="lang-item">
 		 				<image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=625669185,4000536547&fm=26&gp=0.jpg" mode="widthFix"></image>
@@ -34,7 +34,7 @@
 		 		</view>
 		 		
 		 		<view class="confirm-btn">
-		 			<view class="btn" @tap="confirm">确 定</view>
+		 			<view class="btn" @tap="confirm">{{$t('all.confirm')}}</view>
 		 		</view>
 		 	</view>
 		 </view>

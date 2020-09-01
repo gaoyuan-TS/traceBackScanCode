@@ -1,291 +1,209 @@
 <template>
 	<view class="content">
+		<uni-popup ref="popup" :type="type" :animation="false" :maskClick="false">
+			<view class="popup-content">{{message}}</view>
+		</uni-popup>
+		<select-lang></select-lang>
 		<!-- 使用无标题 -->
 		<box-item>
 			<view slot="body">
 				<!-- 轮播图 -->
 				<view class="swiper-main">
-					<video v-if="!is_flag" id="myVideo" class="videoBox" src="https://img.cdn.aliyun.dcloud.net.cn/guide/uniapp/%E7%AC%AC1%E8%AE%B2%EF%BC%88uni-app%E4%BA%A7%E5%93%81%E4%BB%8B%E7%BB%8D%EF%BC%89-%20DCloud%E5%AE%98%E6%96%B9%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B@20181126-lite.m4v"
-					 @error="videoErrorCallback" controls></video>
-
+					<video v-if="!is_flag" id="myVideo" class="videoBox" :src="merchantInfo.goodsVideo" controls></video>
 					<view class="uni-padding-wrap" v-if="is_flag">
 						<view class="page-section ">
 							<view class="page-section-spacing">
 								<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-									<swiper-item>
+									<swiper-item v-for="(Gimg,imge) in merchantInfo.goodsImages" :key="imge">
 										<view class="swiper-pic">
-											<image src="../../static/picture/3.png" mode=""></image>
-										</view>
-									</swiper-item>
-									<swiper-item>
-										<view class="swiper-pic">
-											<image src="../../static/picture/4.png" mode=""></image>
-										</view>
-									</swiper-item>
-									<swiper-item>
-										<view class="swiper-pic">
-											<image src="../../static/picture/5.png" mode=""></image>
+											<image :src="Gimg" mode=""></image>
 										</view>
 									</swiper-item>
 								</swiper>
 							</view>
 						</view>
 					</view>
-
 					<view class="btnBox">
-						<view class="left" :class="{'active': !active}" @click="changeTypeVideo">视频</view>
-						<view class="right" :class="{'active': active}" @click="changeTypePic">图片</view>
+						<view class="left" v-if="merchantInfo.goodsVideo" :class="{'active': active}" @click="changeTypeVideo">{{$t('trace.video')}}</view>
+						<view class="right" :class="{'active': !active}" @click="changeTypeVideo">{{$t('trace.image')}}</view>
 					</view>
 				</view>
 				<!-- 轮播图 -->
 				<view class="product-content">
-					<view class="text-title">十月芬芳口腔护理套装套装四件套组合/盒 洁齿护龈抑菌</view>
+					<view class="text-title">{{merchantInfo.goodsName}}</view>
 				</view>
 				<view class="product-zs">
 					<view>
-						<text class="title-head">恭喜，该商品为正品</text></view>
+						<text class="title-head">{{$t('trace.quality')}}</text></view>
 					<view>
-						<text class="title-text">追溯码：【988776676766767676655550987】</text></view>
+						<text class="title-text">{{$t('trace.trace_code')}}：【{{ZsInfo.traceCode}}】</text></view>
 					<view>
 						<text class="title-text">
-							<text style="color: red;">警告！</text> 本次为第456次查询 </text>
+							<text style="color: red;">{{$t('trace.total_warning')}}！</text> {{$t('trace.trace_frequency1')}}{{ZsInfo.scanCount}}{{$t('trace.trace_frequency2')}}
+						</text>
 					</view>
 					<view>
-						<text class="title-text">同批次产品总数：987766件 </text>
+						<text class="title-text">{{$t('trace.total_products')}}：{{ZsInfo.TotalCount}}件 </text>
 					</view>
 					<view class="zhengpin">
 						<image src="../../static/picture/zhengpin.png"></image>
 					</view>
 					<view style="display: flex; margin-top: 20upx;">
-						<view class="btn-item" style="margin-left: auto;">
+						<view class="btn-item" style="margin-left: auto;" @click="goRord()">
 							<image src="../../static/picture/chaxun.png"></image>
-							查看所有的查询记录
+							{{$t('trace.aiew_all_query_records')}}
 						</view>
 					</view>
 				</view>
 			</view>
 		</box-item>
 		<!-- 区块信息 -->
-		<box-item title="区块信息" style="margin-top: 18upx;">
+		<box-item :title="$t('trace.block_information')" style="margin-top: 18upx;">
 			<view slot="body">
 				<view class="blockchain">
-					<view class="Chain">所在链：<text class="Chain-title">CCTC主链</text></view>
-					<view class="Chain">所在区块：<text class="Chain-title">12125</text></view>
-					<view class="Chain">HashCode：<text class="Chain-title">124hhu8989f89fuf9fff9f99f9ffhffhf
-							hff9fjfj</text></view>
+					<view class="Chain">{{$t('trace.chain')}}：<text class="Chain-title">CCTC主链</text></view>
+					<view class="Chain">{{$t('trace.block')}}：<text class="Chain-title">{{ZsInfo.block || '暂无数据'}}</text></view>
+					<view class="Chain">HashCode：<text class="Chain-title" style="width: 440upx;overflow-wrap: break-word;">{{ZsInfo.hashcode || '暂无数据'}}</text></view>
 				</view>
 			</view>
 		</box-item>
 		<!-- 真伪信息 -->
-		<box-item title="真伪信息" style="margin-top: 18upx;">
+		<box-item :title="$t('trace.authenticity_information')" style="margin-top: 18upx;">
 			<view slot="body">
 				<view class="check">
 					<view class="Chain">
-						<view class="Chain-value">
-							首次真伪查询：
-						</view>
-						<view class="Chain-title">已被查询，可追溯商品，请放心使用</view>
+						<!-- 	<view class="Chain-value"> -->
+						{{$t('trace.first_query')}}：{{$t('trace.first_info')}}
+						<!-- </view> -->
+						<!-- <view class="Chain-title"></view> -->
 					</view>
 					<view class="Chain">
-						<view class="Chain-value">
-							查询客户端：
-						</view>
-						<view class="Chain-title">微信</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.query_client')}}：
+						<!-- </view> -->
+						{{iswin || '暂无数据'}}
 					</view>
 					<view class="Chain">
-						<view class="Chain-value">
-							系统环境：
-						</view>
-						<view class="Chain-title">Iphone</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.system_environment')}}：
+						<!-- </view> -->
+						{{clientInfo.osName || '暂无数据'}}
 					</view>
 					<view class="Chain">
-						<view class="Chain-value">
-							首次查询时间：
-						</view>
-						<view class="Chain-title">2020/09/09 13:12:12</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.First_time')}}：
+						<!-- </view> -->
+						{{JSON.stringify(firstScan) == "{}"? this.dateT:firstScan.scanTime}}
 					</view>
 					<view class="Chain">
-						<view class="Chain-value">
-							首次查询地址：
-						</view>
-						<view class="Chain-title">广东省广州市天河区天源路132号</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.First_address')}}：
+						<!-- </view> -->
+						{{JSON.stringify(firstScan) == "{}"? this.scanAddress:firstScan.scanAddress}}
 					</view>
 				</view>
 			</view>
 		</box-item>
 		<!-- 流通追溯 -->
-		<box-item title="流通追溯" style="margin-top: 20upx;">
+		<box-item :title="$t('trace.circulate_trace')" style="margin-top: 20upx;">
 			<view slot="body" style="padding: 30upx;">
 				<scroll-view scroll-x="true" class="circulate">
-					<view class="circulate-item">
+					<view class="circulate-item" v-for="(trace,point) in tracePointNodes" :key="point" @click="getTrace(trace,point)">
 						<view class="circulate-box">
-							<image src="../../static/picture/yuan.png" mode="widthFix"></image>
-							<text class="box-title">某某某商户</text>
+							<image src="../../static/picture/zhuisu.png" mode="widthFix" v-show="point === currentIndex"></image>
+							<image src="../../static/picture/yuan.png" mode="widthFix" v-show="point != currentIndex"></image>
+							<text class="box-title" :class="{ativetext:point === currentIndex}">{{trace.tracePointName}}</text>
 						</view>
 						<view class="divtest"></view>
 					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/yuan.png" mode="widthFix"></image>
-							<text class="box-title">某某某农场</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/yuan.png" mode="widthFix"></image>
-							<text class="box-title">某某某供应商</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/zhuisu.png" mode="widthFix"></image>
-							<text class="box-text">追溯信息科技股份有限公司</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/yuan.png" mode="widthFix"></image>
-							<text class="box-title">某某某供应商</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
+
 				</scroll-view>
 				<view class="circulate-info">
 					<view class="Chain">
-						<view class="Chain-value">
-							流通时间：
-						</view>
-						<view class="Chain-title">2019/09/09 13:12</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.circulate_time')}}：
+						<!-- </view> -->
+						<view class="Chain-title">{{traceInfo.tracePointTime}}</view>
 					</view>
 					<view class="Chain">
-						<view class="Chain-value">
-							经营商户：
-						</view>
-						<view class="Chain-title">追溯信息科技有限公司</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.operate_merchant')}}：
+						<!-- </view> -->
+						<view class="Chain-title">{{traceInfo.tracePointName}}</view>
 					</view>
 					<view class="Chain">
-						<view class="Chain-value">
-							详细地址：
-						</view>
-						<view class="Chain-title">广州市天河区天源路401号</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.address')}}：
+						<!-- </view> -->
+						<view class="Chain-title">{{traceInfo.detailAddress}}</view>
 					</view>
 					<view class="Chain">
-						<view class="Chain-value">
-							负责人：
-						</view>
-						<view class="Chain-title">罗生</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.principal')}}：
+						<!-- </view> -->
+						<view class="Chain-title">{{traceInfo.personInCharge}}</view>
 					</view>
 					<view class="Chain">
-						<view class="Chain-value">
-							联系电话：
-						</view>
-						<view class="Chain-title">134*****345</view>
+						<!-- <view class="Chain-value"> -->
+						{{$t('trace.contact_number')}}：
+						<!-- </view> -->
+						<view class="Chain-title">{{traceInfo.contactNumber}}</view>
 					</view>
 				</view>
 			</view>
 		</box-item>
 		<!-- 生产追溯 -->
-		<box-item title="生产追溯" style="margin-top: 20upx;">
-			<view slot="title-right" style="color: #EF4235;">生产环节透明直播 8台设备运行中</view>
+		<box-item :title="$t('trace.production_trace')" style="margin-top: 20upx;" v-if="tsvList.length > 0">
+			<!-- <view slot="title-right" style="color: #EF4235;">生产环节透明直播 8台设备运行中</view> -->
 			<view slot="body" class="manufacture">
 				<view class="production">
 					<view class="batch" style="background-color: #fffaf4;">
-						<view class="title">生产批次号</view>
-						<view class="title-value" style="color: #FFA122;">20200909</view>
-						<view class="title-ps">批批透明
-							每批公开</view>
+						<view class="title">{{$t('trace.production_batch_no')}}</view>
+						<view class="title-value" style="font-size: 22upx;color: #FFA122;overflow-wrap: break-word;">{{traceScene.batchNo}}</view>
+						<view class="title-ps">{{$t('trace.batch_transparent')}}</view>
 					</view>
 					<view class="batch" style="background-color: #f3fcf8;">
-						<view class="title">生产批次号</view>
-						<view class="title-value" style="color: #0CC27F;">20200909</view>
+						<view class="title">{{$t('trace.staff_member')}}</view>
+						<view class="title-value" style="color: #0CC27F;">{{traceScene.employeCount}}</view>
 						<view class="title-ps" style="color:  #f3fcf8;;">空</view>
 					</view>
 					<view class="batch" style="background-color: #f5f7ff;">
-						<view class="title">生产批次号</view>
-						<view class="title-value" style="color: #536BFF;">20200909</view>
+						<view class="title">{{$t('trace.production_processes')}}</view>
+						<view class="title-value" style="color: #536BFF;">{{traceScene.sceneCount}}</view>
 						<view class="title-ps" style="color: #f5f7ff;">空</view>
 					</view>
 				</view>
 				<scroll-view scroll-x="true" class="circulate">
-					<view class="circulate-item">
+					<view class="circulate-item" v-for="(item,batch) in traceScene.tsvList" :key="batch" @click="getBatch(item,batch)">
 						<view class="circulate-box">
-							<image src="../../static/picture/gong.png" mode="widthFix"></image>
-							<text class="box-title">某某某商户</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/gong.png" mode="widthFix"></image>
-							<text class="box-title">某某某农场</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/gong.png" mode="widthFix"></image>
-							<text class="box-title">某某某供应商</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/yuangong.png" mode="widthFix"></image>
-							<text class="box-text">追溯信息科技股份有限公司</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/yuangong.png" mode="widthFix"></image>
-							<text class="box-text">追溯信息科技股份有限公司</text>
-						</view>
-						<view class="divtest"></view>
-					</view>
-					<view class="circulate-item">
-						<view class="circulate-box">
-							<image src="../../static/picture/gong.png" mode="widthFix"></image>
-							<text class="box-title">某某某供应商</text>
+							<image src="../../static/picture/yuangong.png" mode="widthFix" v-show="batch === batchIndex"></image>
+							<image src="../../static/picture/gong.png" mode="widthFix" v-show="batch != batchIndex"></image>
+							<text class="box-title" :class="{ativetext:batch === batchIndex}">{{item.sceneName}}</text>
 						</view>
 						<view class="divtest"></view>
 					</view>
 				</scroll-view>
 				<view class="circulate-info">
-					<view class="Chain">操作时间：<text class="Chain-title">2019/09/09 13:12</text></view>
-					<view class="Chain">负责人：<view class="Chain-name">员工1</view>
+					<view class="Chain">{{$t('trace.operate_time')}}：{{batchInfo.sceneTimeScope}}</view>
+					<view class="Chain">{{$t('trace.production_principal')}}：<view class="Chain-name">{{batchInfo.employeName}}</view>
 						<view class="btn-item" style="margin-left: auto;">
 							<image src="../../static/picture/jiangkang.png"></image>
-							查看健康证
+							{{$t('trace.view_health_certificate')}}
 						</view>
 					</view>
-					<view class="Chain">环节名称：<text class="Chain-title">广州市天河区天源路401号</text></view>
-					<view class="Chain">环节描述：<view class="Chain-name">xxx枸杞</view>
-						<view class="btn-item" style="margin-left: auto;">
+					<view class="Chain">{{$t('trace.link_name')}}：{{batchInfo.sceneName}}</view>
+					<view class="Chain">{{$t('trace.link_description')}}：{{batchInfo.description}}</view>
+					<view class="Chain2" v-for="(item,index) in batchInfo.materialList" :key="index">{{$t('trace.raw_materials')}}{{index + 1}}：{{item.materialName}}
+						<view class="btn-item" style="margin-left: auto;" @click="goMaterials(item.materialOutId)">
 							<image src="../../static/picture/raw.png"></image>
-							查看原材料信息
+							{{$t('trace.View_raw_material_information')}}
 						</view>
 					</view>
 				</view>
 				<view class="bottom-picture">
-					<view class="bottom-iamge">
-						<!-- <image src="../../static/picture/4.png"></image> -->
+					<view class="bottom-iamge" v-for="(bImg,Imgs) in batchInfo.sceneImageList" :key="Imgs" @click="lookImg(bImg)">
+						<image :src="bImg"></image>
 					</view>
-					<view class="bottom-iamge">
-						<!-- <image src="../../static/picture/4.png"></image> -->
-					</view>
-					<view class="bottom-iamge">
-						<!-- <image src="../../static/picture/4.png"></image> -->
-					</view>
-					<view class="bottom-iamge">
-						<!-- <image src="../../static/picture/4.png"></image> -->
-					</view>
-					<view class="bottom-iamge">
-						<!-- <image src="../../static/picture/4.png"></image> -->
-					</view>
-
 				</view>
 			</view>
 		</box-item>
@@ -294,39 +212,225 @@
 </template>
 
 <script>
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import uniPopupMessage from '@/components/uni-popup/uni-popup-message.vue'
+	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	export default {
+		components: {
+			uniPopup,
+			uniPopupMessage,
+			uniPopupDialog
+		},
 		data() {
 			return {
-				background: ['color1', 'color2'],
 				indicatorDots: false,
-				autoplay: false,
+				autoplay: true,
 				interval: 2000,
 				duration: 500,
-				is_flag: false, //显示隐藏图片跟视频
-				active: false
+				is_flag: true, //显示隐藏图片跟视频
+				active: false,
+				// Sid: 18051514, //追溯码
+				Sid: 0, //追溯码
+				ZsInfo: {}, // 追溯信息
+				merchantInfo: {}, //商品信息
+				real: '',
+				iswin: '',
+				dateT: '',
+				nowTime: '',
+				tsvList: [], //生产追溯
+				clientInfo: {},
+				netAndAddressInfo: {},
+				firstScan: {},
+				scanAddress: '', //地址
+				tracePointNodes: [], //流通追溯,
+				traceInfo: {}, //流通追溯
+				traceScene: {}, //生产信息
+				batchInfo: {},
+				batchIndex: 0,
+				currentIndex: 0,
+				productionInfo: '', //生产追溯
+				message: '',
 			}
 		},
+		onLoad(option) {
+			this.Sid = uni.getStorageSync('Sid')
+			this.getLocation2()
+			this.getmerchantInfo()
+		},
+		onReady() {
+			uni.setNavigationBarTitle({
+				title: this.$t('all.traceability_informa')
+			});
+		},
 		methods: {
+			goMaterials(item) {
+				console.log(item)
+				uni.navigateTo({
+					url: `../materials/materials?id=${item}`
+				})
+			},
 			changeTypeVideo() {
-				this.active = false
-				this.is_flag = false
+				this.active = !this.active
+				this.is_flag = !this.is_flag
 			},
-			changeTypePic() {
-				this.active = true
-				this.is_flag = true
+			// 获取地址信息
+			getLocation2() {
+				var that = this
+				uni.getLocation({
+					type: 'wgs84',
+					success(res) {
+						// console.log("你当前经纬度是：")
+						// console.log(res)
+						let latitude, longitude;
+						latitude = res.latitude.toString();
+						longitude = res.longitude.toString();
+						// latitude = 23.17999135691706;
+						// longitude = 113.3486509232483;
+						uni.request({
+							header: {
+								"Content-Type": "application/text"
+							},
+							url: 'http://apis.map.qq.com/ws/geocoder/v1/?location=' + latitude + ',' + longitude +
+								'&key=7OFBZ-YVLW3-CSF3Q-YXLDZ-CSEDH-PVFEA',
+							success: (res) => {
+								// console.log("中文位置");
+								// console.log(res);
+								// console.log(res.data.result.address);
+								that.scanAddress = res.data.result.address;
+								if (res.statusCode === 200) {
+									// console.log("获取中文街道地理位置成功")
+									that.handlelocation()
+								} else {
+									// console.log("获取信息失败，请重试！")
+								}
+							}
+						});
+					},
+					fail(res) {
+						// console.log(RES);
+					},
+					complete() {
+						that.getZsInfo()
+					}
+				});
 			},
-			changeIndicatorDots(e) {
-				this.indicatorDots = !this.indicatorDots
+			// 追溯信息
+			getZsInfo() {
+				this.$common.get('/trace-api/trace/getTraceGoodInfo?sid=' + this.Sid).then((data) => {
+					// console.log('aaaaa', data)
+					if (data.data.code === 200) {
+						this.ZsInfo = data.data.data || {}
+						this.clientInfo = this.ZsInfo.clientInfo || {}
+						this.netAndAddressInfo = this.ZsInfo.netAndAddressInfo || {}
+						this.productionInfo = this.ZsInfo.productionInfo || ''
+						if (this.ZsInfo.firstScan) {
+							this.firstScan = this.ZsInfo.firstScan
+						} else {
+							this.firstScan = {}
+						}
+						this.judgeIsWin()
+						this.phoneNumber()
+						if (Number(this.ZsInfo.scanCount) === 1) {
+							this.real = '真品'
+						} else {
+							this.real = '已被查询，可追溯商品，请放心使用！'
+						}
+					} else {
+						this.$refs.popup.open()
+						this.ZsInfo = {}
+						this.message = data.data.message
+					}
+					console.log('this.ZsInfo', this.ZsInfo)
+				})
 			},
-			changeAutoplay(e) {
-				this.autoplay = !this.autoplay
+			// 查找生产追溯
+			getTraceScene(e,k) {
+				this.$common.get('/trace-api/p_scene/traceScene/' + e + '?goodsId=' + k).then((data) => {
+					if (data.data.code === 200) {
+						this.traceScene = data.data.data
+						this.tsvList = this.traceScene.tsvList
+						if (this.tsvList.length === 0) {
+							return
+						} else {
+							this.getBatch(this.traceScene.tsvList[0], 0)
+						}
+					} else {
+						this.traceScene = {}
+					}
+				})
 			},
-			intervalChange(e) {
-				this.interval = e.target.value
+			// 商家接口
+			getmerchantInfo() {
+				this.$common.get('/back-end/ewm/getMerchantInfo?code=' + this.Sid).then((data) => {
+					if (data.data.code === 200) {
+						this.merchantInfo = data.data.data || {}
+						uni.setStorageSync('merchantId', this.merchantInfo.merchantId);
+						uni.setStorageSync('goodsName', this.merchantInfo.goodsName);
+						this.getTraceScene(this.productionInfo,this.merchantInfo.goodsId)
+					} else {
+						this.merchantInfo = {}
+					}
+				})
 			},
-			durationChange(e) {
-				this.duration = e.target.value
-			}
+			// 判断是查询客户端
+			judgeIsWin() {
+				let ua = navigator.userAgent.toLowerCase()
+				let isWeixin = ua.indexOf('micromessenger') !== -1
+				if (isWeixin) {
+					this.iswin = '微信'
+				} else {
+					this.iswin = 'H5'
+				}
+			},
+			// 插入当前地理位置和时间
+			handlelocation() {
+				// console.log('插入')
+				this.nowTime = (new Date()).valueOf()
+				this.dateT = this.$common.formatTime(this.nowTime, 1)
+				// console.log('插入', this.nowTime)
+				// console.log('插入',this.dateT)
+				let params = {
+					'scanAddress': this.scanAddress,
+					'scanTime': this.nowTime,
+					'sid': this.Sid
+				}
+				this.$common.post('/trace-api/trace/insertScanRecord', params).then((data) => {
+					// console.log('插入',data)
+				})
+			},
+			// 电话号码中间4位变*
+			phoneNumber() {
+				this.tracePointNodes = this.ZsInfo.tracePointNodes
+				for (var j = 0; j < this.tracePointNodes.length; j++) {
+					let tel = this.tracePointNodes[j].contactNumber
+					tel = '' + tel
+					let tel1 = tel.replace(tel.substring(3, 7), '****')
+					this.tracePointNodes[j].contactNumber = tel1
+				}
+				this.traceInfo = this.tracePointNodes[0]
+			},
+			// 流通追溯选择
+			getTrace(e, index) {
+				this.traceInfo = e
+				this.currentIndex = index
+			},
+			getBatch(e, index) {
+				this.batchInfo = e
+				this.batchIndex = index
+			},
+			// 跳转记录
+			goRord() {
+				console.log(111111111111)
+				uni.navigateTo({
+					url: `../record/record?id=${this.Sid}`
+				})
+			},
+			lookImg(e) {
+				uni.previewImage({
+					urls: [e],
+				})
+			},
+
 		}
 	}
 </script>
@@ -334,6 +438,7 @@
 <style lang="less" scoped>
 	.content {
 		padding-bottom: 30upx;
+
 		.product-content {
 			background: #EF4235;
 			border-radius: 50upx;
@@ -356,6 +461,7 @@
 			text-align: center;
 			padding: 19upx 32upx;
 			position: relative;
+
 			.title-head {
 				font-size: 32upx;
 				font-family: PingFangSC, PingFangSC-Medium;
@@ -381,6 +487,7 @@
 			position: absolute;
 			top: 0upx;
 			right: 20upx;
+
 			image {
 				width: 100%;
 				height: 100%;
@@ -392,10 +499,7 @@
 			width: 100%;
 			height: 820upx;
 
-			.videoBox {
-				width: 100%;
-				height: 750upx;
-			}
+			.videoBox {}
 
 			.uni-padding-wrap {
 				height: 750upx;
@@ -486,18 +590,14 @@
 
 						.box-title {
 							font-size: 20upx;
-							font-weight: 400;
+							// font-weight: 400;
 							color: #333333;
 							text-align: center;
 							white-space: pre-wrap;
 						}
 
-						.box-text {
-							font-size: 20upx;
-							font-weight: 500;
+						.ativetext {
 							color: #EF4235;
-							text-align: center;
-							white-space: pre-wrap;
 						}
 					}
 				}
@@ -556,22 +656,25 @@
 			font-family: PingFangSC, PingFangSC-Medium;
 			font-weight: 500;
 			display: flex;
-			align-items: center;
+			align-items: flex-start;
+			overflow-wrap: break-word;
+			font-weight: 400;
 			margin-left: 20upx;
-
-			.Chain-value {}
-
-			.Chain-title {
-
-				font-weight: 400;
-			}
-
-			.Chain-name {
-
-				font-weight: 400;
-			}
 		}
 
+		.Chain2 {
+			width: 100%;
+			margin-top: 32upx;
+			font-size: 28upx;
+			font-family: PingFangSC, PingFangSC-Medium;
+			font-weight: 500;
+			display: flex;
+			flex-direction: column;
+			// align-items: flex-start;
+			overflow-wrap: break-word;
+			font-weight: 400;
+			margin-left: 20upx;
+		}
 
 		.divtest {
 			margin-top: 40upx;
@@ -610,7 +713,6 @@
 				margin: 10upx;
 				width: 210upx;
 				height: 210upx;
-				background-color: pink;
 
 				image {
 					width: 100%;
@@ -625,6 +727,11 @@
 			vertical-align: -0.15em;
 			fill: currentColor;
 			overflow: hidden;
+		}
+		.popup-content {
+			background-color: #fff;
+			padding: 15px;
+			font-size: 32upx;
 		}
 	}
 </style>

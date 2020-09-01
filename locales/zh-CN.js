@@ -11,16 +11,26 @@ export const lang = {
 	// 追溯页面
 	trace: {
 		trace_information: "追溯信息",
+		quality:"恭喜，该商品为正品",
 		video: "视频",
 		image: "图片",
 		trace_code: "追溯码",
-		total_inquiries: "总查询人次",
+		total_warning: "警告",
+		trace_frequency1: "本次为第",
+		trace_frequency2: "次查询",
 		total_products: "同批次产品总数",
 		aiew_all_query_records: "查看所有的查询记录",
 		block_information: "区块信息",
 		chain: "所在链",
 		block: "所在区块",
 		hash_code: "HashCode",
+		authenticity_information:"真伪信息",
+		first_query:"首次真伪查询",
+		first_info:"已被查询，可追溯商品，请放心使用",
+		query_client:"查询客户端",
+		system_environment:"系统坏境",
+		First_time:"首次查询时间",
+		First_address:"首次查询地址",
 		circulate_trace: "流通追溯",
 		circulate_time: "流通时间",
 		operate_merchant: "经营商户",
@@ -94,7 +104,6 @@ export const lang = {
 	
 	// 更多页面
 	more: {
-		more: "更多",
 		commodity_complaints: "商品投诉",
 		agent_application: "代理商申请",
 		problem_description: "问题描述",
@@ -103,10 +112,12 @@ export const lang = {
 		view_historical_issues: "查看历史问题",
 		contact_information: "联系方式",
 		your_name: "您的称呼",
-		name: "名称",
+		name: "代理商名称",
 		contact_person: "联系人",
 		phone_number: "手机号码",
+		agency_state: "代理国家",
 		agency_area: "代理地区",
+		site:"详细地址",
 		upload_ID: "上传证件",
 		business_license_or_identity_information: "营业执照或者身份信息",
 		submit: "提交"
@@ -117,5 +128,12 @@ export const lang = {
 		more: "更多",
 		problem_description: "问题描述",
 		merchant_reply: "商家回复"
+	},
+	all:{
+		current_language: "当前语言",
+		confirm:"确 定",
+		look_more:"点击查看更多",
+		pack_up:"点击收起",
+		traceability_informa:"追溯信息"
 	}
 }

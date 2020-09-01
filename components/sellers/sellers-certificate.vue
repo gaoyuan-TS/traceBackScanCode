@@ -1,11 +1,31 @@
 <template>
 	<view class="sellers-certificate">
-		<fold-box title="企业证书" :limitHeight="300" dropText="点击查看更多">
-			
+		<fold-box :title="$t('sellers.enterprise_certificate')" :limitHeight="300" :dropText="$t('all.look_more')">
 			<view slot="desc">
 				<view class="content-main">
-					<view class="img-wrap" v-for="(item,index) in certificateImages" :key="index">
-						<image :src="item" mode="aspectFit" @tap="handlePreview(item)"></image>
+					<view class="img-wrap" v-if="merchantImage.businessCertificateUrl">
+						<image :src="merchantImage.businessCertificateUrl" mode="aspectFit" @tap="handlePreview(merchantImage.businessCertificateUrl)"></image>
+					</view>
+					<view class="img-wrap"  v-if="merchantImage.hygienicLicenseUrl">
+						<image :src="merchantImage.hygienicLicenseUrl" mode="aspectFit" @tap="handlePreview(merchantImage.hygienicLicenseUrl)"></image>
+					</view>
+<!-- 					<view class="img-wrap"  v-if="merchantImage.merchantLogoUrl">
+						<image :src="merchantImage.merchantLogoUrl" mode="aspectFit" @tap="handlePreview(merchantImage.merchantLogoUrl)"></image>
+					</view> -->
+					<view class="img-wrap"  v-if="merchantImage.papersUrl">
+						<image :src="merchantImage.papersUrl" mode="aspectFit" @tap="handlePreview(merchantImage.papersUrl)"></image>
+					</view>
+					<view class="img-wrap"  v-if="merchantImage.productCertificationUrl">
+						<image :src="merchantImage.productCertificationUrl" mode="aspectFit" @tap="handlePreview(merchantImage.productCertificationUrl)"></image>
+					</view>
+					<view class="img-wrap"  v-if="merchantImage.productTestReportUrl">
+						<image :src="merchantImage.productTestReportUrl" mode="aspectFit" @tap="handlePreview(merchantImage.productTestReportUrl)"></image>
+					</view>
+					<view class="img-wrap"  v-if="merchantImage.productionLicenceUrl">
+						<image :src="merchantImage.productionLicenceUrl" mode="aspectFit" @tap="handlePreview(merchantImage.productionLicenceUrl)"></image>
+					</view>
+					<view class="img-wrap"  v-if="merchantImage.warenzeichenlizenzUrl">
+						<image :src="merchantImage.warenzeichenlizenzUrl" mode="aspectFit" @tap="handlePreview(merchantImage.warenzeichenlizenzUrl)"></image>
 					</view>
 				</view>
 			</view>
@@ -16,31 +36,24 @@
 <script>
 import FoldBox from '../fold-box/fold-box.vue'
 export default {
-	components: {
-		FoldBox
-	},
+	props: {
+		// 标题
+		merchantImage: {
+			type: Object,
+			default: ''
+		}
+		},
 	data() {
 		return {
-			certificateImages:[
-				'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=215374286,3140450363&fm=26&gp=0.jpg',
-				'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594535688774&di=5f0aa24f7c4eb4b848d8a4a9a96ab6c0&imgtype=0&src=http%3A%2F%2Fimg3.jc001.cn%2Fimg%2F688%2F1604688%2F1501%2F1554c073d109be0.jpg',
-				'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594535688773&di=9d7b13c7eb99cf1f886bd39bbd39ba4d&imgtype=0&src=http%3A%2F%2Fdocs.ebdoor.com%2FImage%2FCompanyCertificate%2F9%2F93042.JPG',
-				'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594535688770&di=d258206294fec6aa1046c8650940fba0&imgtype=0&src=http%3A%2F%2Fxian.sduod.com%2FAttachments%2Flicense%2F201804%2Fc17591d93f3399a065e467693fd03331.jpg'
-			]
 		}
 	},
-	
-	methods: {
-		// 点击预览
-		handlePreview(url) {
-			console.log(url)
-			uni.previewImage({
-				current:url,
-				urls: this.certificateImages
-			})
+	methods:{
+		handlePreview(e){
+				uni.previewImage({
+					urls: [e],
+				})
 		}
 	}
-
 }
 </script>
 
